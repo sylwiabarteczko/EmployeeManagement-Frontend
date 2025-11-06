@@ -9,10 +9,21 @@ export default function EmployeeList() {
 
     const [page, setPage] = useState(0)
     const [size, setSize] = useState(10)
+
+    const [search, setSearch] = useState('')
     const [q, setQ] = useState('')
 
     useEffect(() => {
+        const id = setTimeout(() => {
+            setPage(0)
+            setQ(search.trim())
+        }, 300)
+        return () => clearTimeout(id)
+    }, [search])
+
+    useEffect(() => {
         setLoading(true)
+        setError(null)
         getEmployees(page, size, 'id', 'asc', q)
             .then(setData)
             .catch((e) => setError(e instanceof Error ? e.message : String(e)))
@@ -23,66 +34,75 @@ export default function EmployeeList() {
     if (error) return <p style={{ color: 'red' }}>Error: {error}</p>
     if (!data) return null
 
+    const totalPages = Math.max(data.totalPages, 1)
+
     return (
         <>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div className="toolbar">
                 <input
                     placeholder="Search…"
-                    defaultValue={q}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                            setPage(0)
-                            setQ((e.target as HTMLInputElement).value)
-                        }
-                    }}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    aria-label="Search employees"
                 />
-
             </div>
 
-            <table style={{ marginTop: 16, borderCollapse: 'collapse', width: '100%' }}>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>First</th>
-                    <th>Last</th>
-                    <th>DOB</th>
-                    <th>Email</th>
-                    <th>Dept</th>
-                </tr>
-                </thead>
-                <tbody>
-                {data.content.map((e) => (
-                    <tr key={e.id}>
-                        <td>{e.id}</td>
-                        <td>{e.firstName}</td>
-                        <td>{e.lastName ?? ''}</td>
-                        <td>{e.dateOfBirth ?? ''}</td>
-                        <td>{e.email ?? ''}</td>
-                        <td>{e.department ?? ''}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            {data.content.length === 0 ? (
+                <p style={{ marginTop: 16 }}>
+                    No employees found{q ? ` for “${q}”` : ''}.
+                </p>
+            ) : (
+                <div className="table-wrap">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>First</th>
+                            <th>Last</th>
+                            <th>DOB</th>
+                            <th>Email</th>
+                            <th>Dept</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {data.content.map((e) => (
+                            <tr key={e.id}>
+                                <td>{e.id}</td>
+                                <td>{e.firstName}</td>
+                                <td>{e.lastName ?? ''}</td>
+                                <td>{e.dateOfBirth ?? ''}</td>
+                                <td>{e.email ?? ''}</td>
+                                <td>{e.department ?? ''}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
 
-            <div style={{ marginTop: 12, display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div className="pager">
                 <button disabled={page <= 0} onClick={() => setPage((p) => p - 1)}>
                     Prev
                 </button>
+
                 <span>
-          Page {data.number + 1} / {Math.max(data.totalPages, 1)}
+          Page {data.number + 1} / {totalPages}
         </span>
+
                 <button
-                    disabled={data.number + 1 >= data.totalPages}
+                    disabled={data.number + 1 >= totalPages}
                     onClick={() => setPage((p) => p + 1)}
                 >
                     Next
                 </button>
+
                 <select
                     value={size}
                     onChange={(e) => {
                         setSize(Number(e.target.value))
                         setPage(0)
                     }}
+                    aria-label="Page size"
                 >
                     {[5, 10, 20, 50].map((s) => (
                         <option key={s} value={s}>
