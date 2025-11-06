@@ -3,24 +3,34 @@
 This project is a full-stack application for managing employees.
 
 Build with:
-- **Backend**: Java 21 + Spring Boot + PostgreSQL
-- **Frontend**: React + TypeScript + Vite
-- **Database**: PostgreSQL running in Docker Compose
+- **Backend**: (https://github.com/sylwiabarteczko/EmployeeManagement-Backend)
+- **Frontend**: React + TypeScript + Vite + CSS + JavaScript + HTML
 
-To run the application locally, follow these steps:
+## 1. Clone the Repository:
 
-## 1. Start the database (PostgreSQL in Docker)
+Open your terminal and clone the project:
 
-1. Make sure Docker is installed and running.
-2. Go to the project folder where `docker-compose.yml` is located.
-3. Run Postgres in Docker
-
-## 2. Start the backend (Spring Boot)
-
-The backend will start on:
-👉 http://localhost:8080/api
+```bash
+git clone https://github.com/sylwiabarteczko/EmployeeManagement-Frontend.git
+```
+Then open the folder in WebStorm.
 
 ## 3. Start the frontend (Vite + React)
 
+Run in terminal:
+
+```bash
+npm run dev
+```
+
+## 4. Check if Frontend is Running
+
 Open in your browser:
 👉 http://localhost:5173
+
+## 5. Full Flow Test
+
+1. Make sure Docker and Backend are running.
+2. In your browser, open http://localhost:5173.
+3. Try adding a new employee via the form.
+4. Verify that it appears in the backend: http://localhost:8080/api/employees
