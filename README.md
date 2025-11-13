@@ -15,11 +15,18 @@ git clone https://github.com/sylwiabarteczko/EmployeeManagement-Frontend.git
 ```
 Then open the folder in WebStorm.
 
+## 2. Start the backend 
+
+```bash
+mvn spring-boot:run
+```
+
 ## 3. Start the frontend (Vite + React)
 
 Run in terminal:
 
 ```bash
+npm install
 npm run dev
 ```
 
@@ -33,4 +40,3 @@ Open in your browser:
 1. Make sure Docker and Backend are running.
 2. In your browser, open http://localhost:5173.
 3. Try adding a new employee via the form.
-4. Verify that it appears in the backend: http://localhost:8080/api/employees

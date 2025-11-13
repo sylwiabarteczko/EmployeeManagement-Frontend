@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { getEmployees } from '../api'
 import type { Employee, Page } from '../types'
 
@@ -59,20 +60,18 @@ export default function EmployeeList() {
                             <th>ID</th>
                             <th>First</th>
                             <th>Last</th>
-                            <th>DOB</th>
-                            <th>Email</th>
-                            <th>Dept</th>
                         </tr>
                         </thead>
                         <tbody>
                         {data.content.map((e) => (
                             <tr key={e.id}>
-                                <td>{e.id}</td>
-                                <td>{e.firstName}</td>
+                                <td>
+                                    <Link to={`/employees/details?id=${e.id}`}>{e.id}</Link>
+                                </td>
+                                <td>
+                                    <Link to={`/employees/details?id=${e.id}`}>{e.firstName}</Link>
+                                </td>
                                 <td>{e.lastName ?? ''}</td>
-                                <td>{e.dateOfBirth ?? ''}</td>
-                                <td>{e.email ?? ''}</td>
-                                <td>{e.department ?? ''}</td>
                             </tr>
                         ))}
                         </tbody>

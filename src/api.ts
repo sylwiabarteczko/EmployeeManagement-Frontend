@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type {Employee, EmployeeCreateDTO, Page} from './types'
+import type { Employee, EmployeeCreateDTO, Page } from './types'
 
 export const api = axios.create({ baseURL: '/api' })
 
@@ -17,3 +17,21 @@ export const getEmployees = async (
 export const createEmployee = async (payload: EmployeeCreateDTO): Promise<void> => {
     await api.post('/employees', payload)
 }
+
+export const getEmployee = async (id: number): Promise<Employee> => {
+    const { data } = await api.get(`/employees/${id}`)
+    return data
+}
+
+export const updateEmployee = async (
+    id: number,
+    payload: EmployeeCreateDTO
+): Promise<Employee> => {
+    const { data } = await api.put(`/employees/${id}`, payload)
+    return data
+}
+
+export const deleteEmployee = async (id: number): Promise<void> => {
+    await api.delete(`/employees/${id}`)
+}
+
