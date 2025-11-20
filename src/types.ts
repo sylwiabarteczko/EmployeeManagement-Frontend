@@ -21,3 +21,4 @@ export interface Page<T> {
     number: number
     size: number
 }
+export type AgeHistogram = Record<string, number>

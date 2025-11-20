@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Employee, EmployeeCreateDTO, Page } from './types'
+import type { Employee, EmployeeCreateDTO, Page, AgeHistogram } from './types'
 
 export const api = axios.create({ baseURL: '/api' })
 
@@ -33,5 +33,20 @@ export const updateEmployee = async (
 
 export const deleteEmployee = async (id: number): Promise<void> => {
     await api.delete(`/employees/${id}`)
+}
+
+export const getAgeHistogram = async (): Promise<AgeHistogram> => {
+    const { data } = await api.get('/employees/age-histogram')
+    return data
+}
+
+export const getEmployeesByAge = async (
+    minAge: number,
+    maxAge?: number
+): Promise<Employee[]> => {
+    const { data } = await api.get('/employees/by-age', {
+        params: { minAge, maxAge },
+    })
+    return data
 }
 
