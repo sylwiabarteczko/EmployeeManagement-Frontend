@@ -9,14 +9,14 @@ import {
 } from 'recharts'
 import type { AgeHistogram } from '../types'
 
-const AGE_ORDER = ['18-25', '26-35', '36-45', '46-55', '56-65', '66+']
-
 interface AgeHistogramChartProps {
     histogram: AgeHistogram
 }
 
 export default function AgeHistogramChart({ histogram }: AgeHistogramChartProps) {
-    const data = AGE_ORDER.map((label) => ({
+
+    const ageRanges = Object.keys(histogram)
+    const data = ageRanges.map(label => ({
         label,
         count: histogram[label] ?? 0,
     }))
